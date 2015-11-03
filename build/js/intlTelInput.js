@@ -883,6 +883,9 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                     this.countryListItems.find(".iti-flag." + countryCode).first().closest(".country").addClass("active");
                 }
             }
+            if (this.onSelectHandler) {
+                this.onSelectHandler(this.selectedCountryData || {});
+            }
         },
         // update the input placeholder to an example number from the currently selected country
         _updatePlaceholder: function() {
@@ -1003,6 +1006,10 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         /********************
    *  PUBLIC METHODS
    ********************/
+        // callback on country selected
+        onCountrySelected: function(onSelectHandler) {
+            this.onSelectHandler = onSelectHandler;
+        },
         // this is called when the geoip call returns
         autoCountryLoaded: function() {
             if (this.options.defaultCountry == "auto") {
