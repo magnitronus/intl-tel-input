@@ -1519,7 +1519,7 @@ $.fn[pluginName].formatNumber = function(number) {
       break;
     }
   }
-  return "+"+window.intlTelInputUtils.formatNumber(number, countryCode);
+  return "+"+dialCode+" "+window.intlTelInputUtils.formatNumber(number.slice(dialCode.length,number.length), countryCode);
   
 };
 

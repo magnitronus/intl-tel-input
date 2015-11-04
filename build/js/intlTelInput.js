@@ -1256,7 +1256,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 break;
             }
         }
-        return "+" + window.intlTelInputUtils.formatNumber(number, countryCode);
+        return "+" + dialCode + " " + window.intlTelInputUtils.formatNumber(number.slice(dialCode.length, number.length), countryCode);
     };
     $.fn[pluginName].version = "6.4.1";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
