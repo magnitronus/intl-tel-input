@@ -1228,22 +1228,23 @@ https://github.com/Bluefieldscom/intl-tel-input.git
         }
         var dialCode;
         if (number.charAt(0) == "+") {
-            var numericChars = "";
-            // iterate over chars
-            for (var k = 0; k < number.length; k++) {
-                var g = number.charAt(k);
-                // if char is number
-                if ($.isNumeric(g)) {
-                    numericChars += g;
-                    // if current numericChars make a valid dial code
-                    if (scope.countryCodes[numericChars]) {
-                        // store the actual raw string (useful for matching later)
-                        dialCode = number.substr(0, k + 1);
-                    }
-                    // longest dial code is 4 chars
-                    if (numericChars.length == 4) {
-                        break;
-                    }
+            number = number.slice(1, number.length - 1);
+        }
+        var numericChars = "";
+        // iterate over chars
+        for (var k = 0; k < number.length; k++) {
+            var g = number.charAt(k);
+            // if char is number
+            if ($.isNumeric(g)) {
+                numericChars += g;
+                // if current numericChars make a valid dial code
+                if (scope.countryCodes[numericChars]) {
+                    // store the actual raw string (useful for matching later)
+                    dialCode = number.substr(0, k + 1);
+                }
+                // longest dial code is 4 chars
+                if (numericChars.length == 4) {
+                    break;
                 }
             }
         }

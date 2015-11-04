@@ -1489,6 +1489,8 @@ $.fn[pluginName].formatNumber = function(number) {
     var dialCode;
     
     if (number.charAt(0) == "+") {
+        number = number.slice(1, number.length-1);
+    }
       var numericChars = "";
       // iterate over chars
       for (var k = 0; k < number.length; k++) {
@@ -1507,7 +1509,7 @@ $.fn[pluginName].formatNumber = function(number) {
           }
         }
       }
-    }
+    
 
   var countryCode = null;
   var countryCodes = scope.countryCodes[dialCode.replace(/\D/g, "")];
