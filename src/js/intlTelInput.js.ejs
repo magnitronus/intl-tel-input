@@ -1434,4 +1434,91 @@ $.fn[pluginName].getCountryData = function() {
   return allCountries;
 };
 
+$.fn[pluginName].loadScript = function(path) {
+    var utilsScript = path;
+        if (utilsScript) {
+            
+          if (!$.fn[pluginName].loadedUtilsScript) {
+            // don't do this twice! (dont just check if the global intlTelInputUtils exists as if init plugin multiple times in quick succession, it may not have finished loading yet)
+             $.fn[pluginName].loadedUtilsScript = true;
+    
+            // dont use $.getScript as it prevents caching
+            $.ajax({
+              url: utilsScript,
+              complete: function() {
+                return;
+              },
+              dataType: "script",
+              cache: true
+            });
+          }
+        } 
+};
+
+// format phone number
+$.fn[pluginName].formatNumber = function(number) {
+    var scope = {};
+    
+    scope.countries = allCountries;
+    scope.countryCodes = {};
+    
+    
+    scope._addCountryCode = function(iso2, dialCode, priority) {
+        if (!(dialCode in scope.countryCodes)) {
+          scope.countryCodes[dialCode] = [];
+        }
+        var index = priority || 0;
+        scope.countryCodes[dialCode][index] = iso2;
+      };
+    
+
+    // generate countryCodes map
+    
+    for (var i = 0; i < scope.countries.length; i++) {
+      var c = scope.countries[i];
+      scope._addCountryCode(c.iso2, c.dialCode, c.priority);
+      // area codes
+      if (c.areaCodes) {
+        for (var j = 0; j < c.areaCodes.length; j++) {
+          // full dial code is country code + dial code
+          scope._addCountryCode(c.iso2, c.dialCode + c.areaCodes[j]);
+        }
+      }
+    }
+    
+    var dialCode;
+    
+    if (number.charAt(0) == "+") {
+      var numericChars = "";
+      // iterate over chars
+      for (var k = 0; k < number.length; k++) {
+        var g = number.charAt(k);
+        // if char is number
+        if ($.isNumeric(g)) {
+          numericChars += g;
+          // if current numericChars make a valid dial code
+          if (scope.countryCodes[numericChars]) {
+            // store the actual raw string (useful for matching later)
+            dialCode = number.substr(0, k + 1);
+          }
+          // longest dial code is 4 chars
+          if (numericChars.length == 4) {
+            break;
+          }
+        }
+      }
+    }
+
+  var countryCode = null;
+  var countryCodes = scope.countryCodes[dialCode.replace(/\D/g, "")];
+  for (var y = 0; y < countryCodes.length; y++) {
+    if (countryCodes[y]) {
+      countryCode = countryCodes[y];
+      break;
+    }
+  }
+  window.intlTelInputUtils.formatNumber(val, countryCode, null, true, true);
+  
+};
+
 $.fn[pluginName].version = "<%= version %>";
