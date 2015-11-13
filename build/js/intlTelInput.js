@@ -1226,7 +1226,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 }
             }
         }
-        var dialCode;
+        var dialCode = "";
         if (number.charAt(0) == "+") {
             number = number.slice(1, number.length - 1);
         }
@@ -1256,7 +1256,7 @@ https://github.com/Bluefieldscom/intl-tel-input.git
                 break;
             }
         }
-        return "+" + dialCode + " " + window.intlTelInputUtils.formatNumber(number.slice(dialCode.length, number.length), countryCode);
+        return window.intlTelInputUtils.formatNumberByType(number, countryCode, 1);
     };
     $.fn[pluginName].version = "6.4.1";
     // Tell JSHint to ignore this warning: "character may get silently deleted by one or more browsers"
