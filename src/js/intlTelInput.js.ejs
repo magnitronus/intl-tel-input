@@ -1486,7 +1486,7 @@ $.fn[pluginName].formatNumber = function(number) {
       }
     }
     
-    var dialCode;
+    var dialCode = "";
     
     if (number.charAt(0) == "+") {
         number = number.slice(1, number.length-1);
@@ -1519,7 +1519,7 @@ $.fn[pluginName].formatNumber = function(number) {
       break;
     }
   }
-  return "+"+dialCode+" "+window.intlTelInputUtils.formatNumber(number.slice(dialCode.length,number.length), countryCode);
+  return window.intlTelInputUtils.formatNumberByType(number, countryCode, 1);
   
 };
 
